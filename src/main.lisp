@@ -9,13 +9,13 @@
     (loop do (sleep 1000))))
 
 (push (hunchentoot:create-folder-dispatcher-and-handler
-       "/css/" (asdf:system-relative-pathname "thiagosp" "dist/css/"))
+       "/static/css/" (asdf:system-relative-pathname "thiagosp" "dist/css/"))
       hunchentoot:*dispatch-table*)
 (push (hunchentoot:create-folder-dispatcher-and-handler
-       "/webfonts/" (asdf:system-relative-pathname "thiagosp" "dist/webfonts/"))
+       "/static/webfonts/" (asdf:system-relative-pathname "thiagosp" "dist/webfonts/"))
       hunchentoot:*dispatch-table*)
 (push (hunchentoot:create-folder-dispatcher-and-handler
-       "/img/" (asdf:system-relative-pathname "thiagosp" "dist/img/"))
+       "/static/img/" (asdf:system-relative-pathname "thiagosp" "dist/img/"))
       hunchentoot:*dispatch-table*)
 
 (defparameter *email* "thiagodasilva@protonmail.com")
@@ -25,7 +25,7 @@
      (:doctype)
      (:html
       (:head
-       (:link :href "css/main.css" :rel "stylesheet")
+       (:link :href "static/css/main.css" :rel "stylesheet")
        (:title ,title))
       (:body
        ,@body
