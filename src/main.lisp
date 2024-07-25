@@ -47,7 +47,7 @@
        (:div.prose.mb-6
         (:p "I'm a software engineer with extensive professional experience, specializing in backend development.")
         (:p "My specialties are: Go, Python, SQL, Kafka, Bash scripting, Unix and Linux, CI/CD, AWS, test-driven development, and more."))
-       (:div.alert.max-w-xl.bg-neutral.border-neutral
+       (:div.alert.max-w-xl
         :role "alert"
         (:div
          (:h3.font-bold.mb-2 "Open to work!")
