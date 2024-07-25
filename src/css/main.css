@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: "Cooper Hewitt";
+    src: url("/webfonts/CooperHewitt-Book.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Cooper Hewitt";
+    src: url("/webfonts/CooperHewitt-Medium.woff") format("woff");
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Cooper Hewitt";
+    src: url("/webfonts/CooperHewitt-BookItalic.woff") format("woff");
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Cooper Hewitt";
+    src: url("/webfonts/CooperHewitt-MediumItalic.woff") format("woff");
+    font-weight: bold;
+    font-style: italic;
+}
