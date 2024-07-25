@@ -88,7 +88,7 @@
   ;; the CSS classes correctly. This seems super hacky, I should find
   ;; out what's a better/correct way to solve this problem later.
   (with-open-file (f (asdf:system-relative-pathname "thiagosp"
-                                                    "dist/html/index.html")
+                                                    "dist/index.html")
                      :direction :output
                      :if-exists :supersede
                      :if-does-not-exist :create)
