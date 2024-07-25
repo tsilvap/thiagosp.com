@@ -61,7 +61,7 @@
          (:h3.font-bold.mb-2 "Open to work!")
          (:p
           "I'm currently looking for a new job. If you're interested in what you see, send me an "
-          (:a
+          (:a.link
            :href (format nil "mailto:~a" *email*) "email")
           " and we can work out the details."))))))
 
