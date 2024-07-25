@@ -35,9 +35,7 @@
 
 (defun home-page ()
   (with-page (:title "Thiago S. Pinto")
-    (:nav.grid.grid-flow-col.gap-4.max-w-lg.mx-auto.text-center.my-8
-     (:a.link.link-hover :href "/about" "about")
-     (:a.link.link-hover :href "/contact" "contact")
+    (:nav.grid.grid-flow-col.max-w-sm.mx-auto.text-center.my-8
      (:a.link.link-hover :href "https://github.com/tsilvap" "github")
      (:a.link.link-hover :href "https://www.linkedin.com/in/thidasilva/" "linkedin")
      (:a.link.link-hover :href "/cv" "cv"))
