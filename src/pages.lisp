@@ -2,9 +2,9 @@
 
 (defparameter *email* "thiagodasilva@protonmail.com")
 
-(defmacro with-page ((&key title) &body body)
+(defmacro with-page ((&key title footer) &body body)
   `(spinneret:with-html-string
-       (:doctype)
+     (:doctype)
      (:html
       (:head
        (:link :href "static/css/main.css" :rel "stylesheet")
@@ -16,10 +16,17 @@
          (let ((spinneret:*html-style* :tree)
                (spinneret:*suppress-inserted-spaces* t)
                (*print-pretty* nil))
+           ,(when footer
+             footer)
            (:p "The source code for this website is on "
                (:a.link :href "https://github.com/tsilvap/thiagosp.com"
                         "GitHub")
-               "."))))))))
+               ".")
+           (:p "Made with " (:span.inline-flex.items-baseline
+                             (:a.link :href "https://lisp-lang.org/" "secret alien technology")
+                             "."
+                             (:img.h-5.ml-1 :src "/static/img/lisplogo_alien_128.png"
+                                            :alt "Lisp alien logo by Conrad Barski"))))))))))
 
 (defun home-page ()
   (with-page (:title "Thiago S. Pinto")
@@ -62,3 +69,46 @@
             (:div.card-body
              (:h3.card-title "Hermes")
              (:p "Hermes is a text and file hosting website that just works.")))))))))
+
+(defun formatted-duration (total-minutes)
+  "Returns a formatted string of hours and minutes corresponding to TOTAL-MINUTES."
+  (let* ((hours (floor total-minutes 60))
+         (remaining-minutes (floor (mod total-minutes 60))))
+    (format nil "~Ah ~Amin" hours remaining-minutes)))
+
+(defun formatted-rating (movie rating-source)
+  (let ((rating (get-rating movie rating-source)))
+    (if (eq rating 'null) "N/A" rating)))
+
+(defun in-theaters-page (sorted-movies)
+  (with-page
+      (:title "In Theaters"
+       :footer
+       (:p "Powered by " (:a.link :href "https://www.themoviedb.org/" "TMDB")
+           " and " (:a.link :href "https://mdblist.com/" "mdblist") "."))
+    (:div.container.p-4
+     (:header.prose.mb-5
+      (:h1 "In Theaters"))
+     (:main
+      (:div.grid.grid-cols-2.gap-4
+       (loop for movie in sorted-movies do
+         (:div.card.card-compact.card-side.bg-base-200.shadow-xl
+          (:figure.w-2/6
+           (:img :src (@ movie "poster")
+                 :alt (format nil "Poster for '~A'" (@ movie "title"))))
+          (:div.card-body.prose
+           (:h2.card-title (format nil "~A (~A)" (@ movie "title") (@ movie "year"))
+                           (:div.badge.badge-neutral
+                            (formatted-duration (@ movie "runtime"))))
+           (:p (@ movie "description"))
+           (:ul (:li (:a.link.link-primary
+                      :href (@ movie "trailer") :target "_blank"
+                      "Trailer (YouTube)"))
+                (:li (format nil "Tomatoes: ~A"
+                             (formatted-rating movie "tomatoes")))
+                (:li (format nil "Tomatoes (audience): ~A"
+                             (formatted-rating movie "tomatoesaudience")))
+                (:li (format nil "Metacritic: ~A"
+                             (formatted-rating movie "metacritic")))
+                (:li (format nil "IMDb: ~A"
+                             (formatted-rating movie "imdb"))))))))))))

@@ -1,5 +1,25 @@
 (in-package :com.thiagosp)
 
+(defun generate-site (sorted-movies)
+  "Generates all the files for the static website."
+  (with-open-file (f (asdf:system-relative-pathname "thiagosp"
+                                                    "dist/index.html")
+                     :direction :output
+                     :if-exists :supersede
+                     :if-does-not-exist :create)
+    (write-sequence (home-page) f))
+
+  (with-open-file (f (asdf:system-relative-pathname "thiagosp"
+                                                    "dist/in-theaters.html")
+                     :direction :output
+                     :if-exists :supersede
+                     :if-does-not-exist :create)
+    (write-sequence (in-theaters-page sorted-movies) f)))
+
+;;; Set up simple Hunchentoot server for development only. In
+;;; production, we serve the static website from an external web
+;;; server.
+
 (defvar *server* nil)
 
 (defun run-server (&key (port 4242))
@@ -20,17 +40,12 @@
        "/static/" (asdf:system-relative-pathname "thiagosp" "dist/static/"))
       hunchentoot:*dispatch-table*)
 
-(defun generate-site ()
-  "Generates all the files for the static website."
-  (with-open-file (f (asdf:system-relative-pathname "thiagosp"
-                                                    "dist/index.html")
-                     :direction :output
-                     :if-exists :supersede
-                     :if-does-not-exist :create)
-    (write-sequence (home-page) f)))
-
-;;; Routes for development server. In production, we'll serve a
-;;; static website from a proper web server.
+(defparameter *sorted-movies* (get-sorted-movies))
 
 (easy-routes:defroute root ("/" :method :get) ()
   (home-page))
+
+(easy-routes:defroute in-theaters ("/in-theaters" :method :get) ()
+  (in-theaters-page *sorted-movies*))
+
+(generate-site *sorted-movies*)

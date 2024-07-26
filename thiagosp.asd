@@ -12,8 +12,9 @@
   :components ((:module "src"
                 :components
                 ((:file "packages")
-                 (:file "pages" :depends-on ("packages"))
-                 (:file "main" :depends-on ("packages" "pages")))))
+                 (:file "in-theaters" :depends-on ("packages"))
+                 (:file "pages" :depends-on ("packages" "in-theaters"))
+                 (:file "main" :depends-on ("packages" "in-theaters" "pages")))))
   :description ""
   :in-order-to ((test-op (test-op "thiagosp/tests")))
   :build-operation "program-op"
