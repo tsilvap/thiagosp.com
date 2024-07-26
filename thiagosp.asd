@@ -2,17 +2,23 @@
   :version "0.0.1"
   :author "Thiago da Silva Pinto"
   :license ""
-  :depends-on ("easy-routes"
+  :depends-on ("com.inuoe.jzon"
+               "dexador"
+               "easy-routes"
                "hunchentoot"
+               "local-time"
+               "serapeum"
                "spinneret")
   :components ((:module "src"
                 :components
-                ((:file "main"))))
+                ((:file "packages")
+                 (:file "pages" :depends-on ("packages"))
+                 (:file "main" :depends-on ("packages" "pages")))))
   :description ""
   :in-order-to ((test-op (test-op "thiagosp/tests")))
   :build-operation "program-op"
   :build-pathname "runserver"
-  :entry-point "com.thiagosp:runserver")
+  :entry-point "com.thiagosp:run-server-cli")
 
 (defsystem "thiagosp/tests"
   :author ""
