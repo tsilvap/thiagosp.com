@@ -7,17 +7,24 @@
      (:doctype)
      (:html
       (:head
-       (:link :href "static/css/main.css" :rel "stylesheet")
+       (:link :href "/static/css/main.css" :rel "stylesheet")
        (:title ,title))
-      (:body
-       ,@body
+      (:body.flex.flex-col.min-h-screen
+       (:div.grow
+        (:nav.grid.grid-flow-col.max-w-sm.mx-auto.text-center.my-8
+         (:a.link.link-hover :href "/" "home")
+         (:a.link.link-hover :href "/notes" "notes")
+         (:a.link.link-hover :href "https://github.com/tsilvap" "github")
+         (:a.link.link-hover :href "https://www.linkedin.com/in/thidasilva/" "linkedin")
+         (:a.link.link-hover :href "/file/cv.pdf" "cv"))
+        ,@body)
        (:footer.footer.footer-center.bg-base-300.text-base-content.p-4.mt-16
         (:aside
          (let ((spinneret:*html-style* :tree)
                (spinneret:*suppress-inserted-spaces* t)
                (*print-pretty* nil))
            ,(when footer
-             footer)
+              footer)
            (:p "The source code for this website is on "
                (:a.link :href "https://github.com/tsilvap/thiagosp.com"
                         "GitHub")
@@ -30,11 +37,6 @@
 
 (defun home-page ()
   (with-page (:title "Thiago S. Pinto")
-    (:nav.grid.grid-flow-col.max-w-sm.mx-auto.text-center.my-8
-     (:a.link.link-hover :href "https://github.com/tsilvap" "github")
-     (:a.link.link-hover :href "https://www.linkedin.com/in/thidasilva/" "linkedin")
-     (:a.link.link-hover :href "/file/cv.pdf" "cv"))
-
     (:div.hero.py-8
      (:div.hero-content
       (:div
@@ -63,15 +65,21 @@
              (:h3.card-title "In Theaters")
              (:p "Shows the list of movies currently showing in various Brazilian theaters, along with Rotten Tomatoes, Metacritic, IMDb scores, and more.")))))))))
 
-(defun formatted-duration (total-minutes)
-  "Returns a formatted string of hours and minutes corresponding to TOTAL-MINUTES."
-  (let* ((hours (floor total-minutes 60))
-         (remaining-minutes (floor (mod total-minutes 60))))
-    (format nil "~Ah ~Amin" hours remaining-minutes)))
+(defun notes-page ()
+  (with-page (:title "Notes | Thiago S. Pinto")
+    (:div.prose.mx-auto.mt-16
+     (:h1 "Notes")
+     (:ul (loop for n in (notes:get-all-notes)
+                collect (:li (:a :href (format nil "/notes/~A" (notes:slug n))
+                                 (notes:title n))))))))
 
-(defun formatted-rating (movie rating-source)
-  (let ((rating (get-rating movie rating-source)))
-    (if (eq rating 'null) "N/A" rating)))
+(defun note-page (note-slug)
+  (let ((note (notes:from-slug note-slug)))
+    (with-page (:title (format nil "~A | Thiago S. Pinto"
+                               (notes:title note)))
+      (:div.prose.mx-auto.mt-16
+       (:h1 (notes:title note))
+       (:raw (notes:note-to-html note))))))
 
 (defun in-theaters-page (sorted-movies)
   (with-page
@@ -105,3 +113,15 @@
                              (formatted-rating movie "metacritic")))
                 (:li (format nil "IMDb: ~A"
                              (formatted-rating movie "imdb"))))))))))))
+
+;;; Helpers
+
+(defun formatted-duration (total-minutes)
+  "Returns a formatted string of hours and minutes corresponding to TOTAL-MINUTES."
+  (let* ((hours (floor total-minutes 60))
+         (remaining-minutes (floor (mod total-minutes 60))))
+    (format nil "~Ah ~Amin" hours remaining-minutes)))
+
+(defun formatted-rating (movie rating-source)
+  (let ((rating (get-rating movie rating-source)))
+    (if (eq rating 'null) "N/A" rating)))

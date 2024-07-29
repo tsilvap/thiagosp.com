@@ -2,18 +2,22 @@
   :version "0.0.1"
   :author "Thiago da Silva Pinto"
   :license ""
-  :depends-on ("com.inuoe.jzon"
+  :depends-on ("alexandria"
+               "cl-ppcre"
+               "com.inuoe.jzon"
                "dexador"
                "easy-routes"
                "hunchentoot"
                "local-time"
                "serapeum"
-               "spinneret")
+               "spinneret"
+               "str")
   :components ((:module "src"
                 :components
                 ((:file "packages")
+                 (:file "notes" :depends-on ("packages"))
                  (:file "in-theaters" :depends-on ("packages"))
-                 (:file "pages" :depends-on ("packages" "in-theaters"))
+                 (:file "pages" :depends-on ("packages" "notes" "in-theaters"))
                  (:file "main" :depends-on ("packages" "in-theaters" "pages")))))
   :description ""
   :in-order-to ((test-op (test-op "thiagosp/tests")))

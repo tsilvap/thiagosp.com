@@ -1,20 +1,26 @@
 (in-package :com.thiagosp)
 
+(defmacro generate-page (system-relative-dest-path &body body)
+  (with-gensyms (dest-path f)
+    `(let ((,dest-path (asdf:system-relative-pathname
+                        "thiagosp" ,system-relative-dest-path)))
+       (ensure-directories-exist ,dest-path)
+       (with-open-file (,f ,dest-path
+                           :direction :output
+                           :if-exists :supersede
+                           :if-does-not-exist :create)
+         (write-sequence (progn ,@body) ,f)))))
+
 (defun generate-site (sorted-movies)
   "Generates all the files for the static website."
-  (with-open-file (f (asdf:system-relative-pathname "thiagosp"
-                                                    "dist/index.html")
-                     :direction :output
-                     :if-exists :supersede
-                     :if-does-not-exist :create)
-    (write-sequence (home-page) f))
+  (generate-page "dist/index.html" (home-page))
 
-  (with-open-file (f (asdf:system-relative-pathname "thiagosp"
-                                                    "dist/in-theaters.html")
-                     :direction :output
-                     :if-exists :supersede
-                     :if-does-not-exist :create)
-    (write-sequence (in-theaters-page sorted-movies) f)))
+  (generate-page "dist/notes.html" (notes-page))
+  (loop for note in (notes:get-all-notes)
+        do (generate-page (format nil "dist/notes/~A.html" (notes:slug note))
+             (note-page (notes:slug note))))
+
+  (generate-page "dist/in-theaters.html" (in-theaters-page sorted-movies)))
 
 ;;; Set up simple Hunchentoot server for development only. In
 ;;; production, we serve the static website from an external web
@@ -44,6 +50,12 @@
 
 (easy-routes:defroute root ("/" :method :get) ()
   (home-page))
+
+(easy-routes:defroute notes ("/notes" :method :get) ()
+  (notes-page))
+
+(easy-routes:defroute note ("/notes/:note-slug" :method :get) ()
+  (note-page note-slug))
 
 (easy-routes:defroute in-theaters ("/in-theaters" :method :get) ()
   (in-theaters-page *sorted-movies*))
