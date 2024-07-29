@@ -1,6 +1,9 @@
 # [thiagosp.com](https://thiagosp.com/)
 
+Source code for my personal website.
+
 ## Dependencies
 
-- Pandoc
+Aside from Common Lisp, we need the following third-party programs installed in the system:
 
+- Pandoc
