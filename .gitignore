@@ -7,3 +7,6 @@
 *.x86f
 *~
 .#*
+/dist/
+/node_modules/
+/config.json
