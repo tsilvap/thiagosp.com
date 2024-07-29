@@ -33,7 +33,7 @@
     (:nav.grid.grid-flow-col.max-w-sm.mx-auto.text-center.my-8
      (:a.link.link-hover :href "https://github.com/tsilvap" "github")
      (:a.link.link-hover :href "https://www.linkedin.com/in/thidasilva/" "linkedin")
-     (:a.link.link-hover :href "/cv" "cv"))
+     (:a.link.link-hover :href "/file/cv.pdf" "cv"))
 
     (:div.hero.py-8
      (:div.hero-content
