@@ -61,14 +61,7 @@
             :class "hover:bg-base-300"
             (:div.card-body
              (:h3.card-title "In Theaters")
-             (:p "Shows the list of movies currently showing in various Brazilian theaters, along with Rotten Tomatoes, Metacritic, IMDb scores, and more.")))))
-      (:li
-       (:a :href "/hermes"
-           (:div.card.bg-base-200.shadow-xl
-            :class "hover:bg-base-300"
-            (:div.card-body
-             (:h3.card-title "Hermes")
-             (:p "Hermes is a text and file hosting website that just works.")))))))))
+             (:p "Shows the list of movies currently showing in various Brazilian theaters, along with Rotten Tomatoes, Metacritic, IMDb scores, and more.")))))))))
 
 (defun formatted-duration (total-minutes)
   "Returns a formatted string of hours and minutes corresponding to TOTAL-MINUTES."
