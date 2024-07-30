@@ -9,6 +9,7 @@
       (:head
        (:meta :name "viewport" :content "width=device-width, initial-scale=1")
        (:link :href "/static/css/main.css" :rel "stylesheet")
+       (:link :rel "icon" :href "/static/img/favicon.ico")
        (:title ,title))
       (:body.flex.flex-col.min-h-screen
        (:div.grow
