@@ -7,11 +7,12 @@
      (:doctype)
      (:html
       (:head
+       (:meta :name "viewport" :content "width=device-width, initial-scale=1")
        (:link :href "/static/css/main.css" :rel "stylesheet")
        (:title ,title))
       (:body.flex.flex-col.min-h-screen
        (:div.grow
-        (:nav.grid.grid-flow-col.max-w-sm.mx-auto.text-center.my-8
+        (:nav.grid.grid-flow-col.text-center.mx-auto.px-4.py-8.max-w-sm
          (:a.link.link-hover :href "/" "home")
          (:a.link.link-hover :href "/notes" "notes")
          (:a.link.link-hover :href "https://github.com/tsilvap" "github")
@@ -40,7 +41,8 @@
     (:div.hero.py-8
      (:div.hero-content
       (:div
-       (:h1.text-5xl.font-bold.mb-6 "Hi, I'm Thiago S. Pinto")
+       (:h1.font-bold.mb-6.text-3xl
+        :class "md:text-5xl" "Hi, I'm Thiago S. Pinto")
        (:div.prose.mb-6
         (:p "I'm a software engineer with extensive professional experience, specializing in backend development.")
         (:p "My specialties are: Go, Python, SQL, Kafka, Bash scripting, Unix and Linux, CI/CD, AWS, test-driven development, and more."))
@@ -54,7 +56,7 @@
            :href (format nil "mailto:~a" *email*) "email")
           " and we can work out the details."))))))
 
-    (:div.max-w-2xl.mx-auto
+    (:div.max-w-2xl.mx-auto.p-4
      (:h2.text-2xl.font-bold.mb-6 "Micro projects")
      (:ul.grid.gap-6
       (:li
@@ -67,8 +69,8 @@
 
 (defun notes-page ()
   (with-page (:title "Notes | Thiago S. Pinto")
-    (:div.prose.mx-auto.mt-16
-     (:h1 "Notes")
+    (:div.prose.mx-auto.mt-16.p-4
+     (:h1.text-3xl "Notes")
      (:ul (loop for n in (notes:get-all-notes)
                 collect (:li (:a :href (format nil "/notes/~A" (notes:slug n))
                                  (notes:title n))))))))
@@ -77,8 +79,8 @@
   (let ((note (notes:from-slug note-slug)))
     (with-page (:title (format nil "~A | Thiago S. Pinto"
                                (notes:title note)))
-      (:div.prose.mx-auto.mt-16
-       (:h1 (notes:title note))
+      (:div.prose.mx-auto.mt-16.p-4
+       (:h1.text-3xl (notes:title note))
        (:raw (notes:note-to-html note))))))
 
 (defun in-theaters-page (sorted-movies)
@@ -87,14 +89,16 @@
        :footer
        (:p "Powered by " (:a.link :href "https://www.themoviedb.org/" "TMDB")
            " and " (:a.link :href "https://mdblist.com/" "mdblist") "."))
-    (:div.container.p-4
+    (:div.mx-auto.p-4
      (:header.prose.mb-5
       (:h1 "In Theaters"))
      (:main
-      (:div.grid.grid-cols-2.gap-4
+      (:div.grid.gap-4
+       :class "lg:grid-cols-2"
        (loop for movie in sorted-movies do
-         (:div.card.card-compact.card-side.bg-base-200.shadow-xl
-          (:figure.w-2/6
+         (:div.card.card-compact.bg-base-200.shadow-xl
+          :class "md:card-side"
+          (:figure.w-2/6.mx-auto
            (:img :src (@ movie "poster")
                  :alt (format nil "Poster for '~A'" (@ movie "title"))))
           (:div.card-body.prose
