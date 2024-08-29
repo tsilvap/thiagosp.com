@@ -56,8 +56,8 @@
 
 (defun get-rating (movie rating-source)
   (let ((rating (find rating-source (@ movie "ratings")
-                       :key (lambda (el) (@ el "source"))
-                       :test #'string=)))
+                      :key (lambda (el) (@ el "source"))
+                      :test #'string=)))
     (@ rating "score")))
 
 (defun get-sorted-movies (&key (rating-source "tomatoes"))
