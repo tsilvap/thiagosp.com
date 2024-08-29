@@ -9,6 +9,7 @@
            #:get-all-notes
            #:title
            #:slug
+           #:created-at
            #:from-slug
            #:note-to-html))
 
@@ -25,6 +26,9 @@
   (:use :cl :com.thiagosp.in-theaters)
   (:local-nicknames (:notes :com.thiagosp.notes))
   (:import-from :serapeum #:@)
+  (:import-from :local-time
+                #:format-timestring
+                #:+utc-zone+)
   (:export #:home-page
            #:notes-page
            #:note-page

@@ -73,8 +73,14 @@
     (:div.prose.mx-auto.mt-16.p-4
      (:h1.text-3xl "Notes")
      (:ul (loop for n in (notes:get-all-notes)
-                collect (:li (:a :href (format nil "/notes/~A" (notes:slug n))
-                                 (notes:title n))))))))
+                collect
+                (:li (:div.flex.flex-col
+                      (:div (:a :href (format nil "/notes/~A" (notes:slug n))
+                                (notes:title n)))
+                      (:div (format-timestring
+                             nil (notes:created-at n)
+                             :format '(:long-month " " :day ", " :year)
+                             :format +utc-zone+)))))))))
 
 (defun note-page (note-slug)
   (let ((note (notes:from-slug note-slug)))
