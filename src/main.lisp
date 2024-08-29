@@ -35,12 +35,13 @@
 
 (defun run-server (&key (port 4242))
   (when (null *server*)
-    (setf *server* (make-instance 'easy-routes:easy-routes-acceptor :port port)))
-  (hunchentoot:start *server*))
+    (setf *server* (make-instance 'easy-routes:easy-routes-acceptor :port port))
+    (hunchentoot:start *server*)))
 
 (defun stop-server ()
   (when (not (null *server*))
-    (hunchentoot:stop *server*)))
+    (hunchentoot:stop *server*)
+    (setf *server* nil)))
 
 (defun run-server-cli (&key (port 4242))
   (let ((server (make-instance 'easy-routes:easy-routes-acceptor :port port)))
@@ -70,3 +71,4 @@
     (in-theaters-page *sorted-movies*)))
 
 (generate-site *sorted-movies*)
+(run-server :port 4242)
