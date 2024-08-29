@@ -100,7 +100,8 @@ If RATING-SOURCE is not specified, sort it by Tomatometer score."
                              (quri:url-encode movie-title))
                      :headers `(("Authorization"
                                  . ,(format nil "Bearer ~A" *tmdb-access-token*))))))
-         (result (aref (@ response-parsed "results") 0)))
+         (results (@ response-parsed "results"))
+         (result (if (> (length results) 0) (elt results 0) nil)))
     (if result
         (@ result "id")
         (error 'movie-not-found-error
